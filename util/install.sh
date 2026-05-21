@@ -207,7 +207,7 @@ function wifi_deps {
         $install gcc make socat psmisc xterm ssh iperf telnet \
                  ethtool help2man $pf pylint $pep \
                  net-tools \
-                 ${PYPKG}-pexpect ${PYPKG}-tk
+                 ${PYPKG}-pexpect ${PYPKG}-tk ${PYPKG}-six
         # Install pip
         $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
         if ! ${PYTHON} -m pip -V; then
@@ -225,7 +225,7 @@ function wifi_deps {
     fi
 
     echo "Installing Mininet-WiFi dependencies"
-    $install wireless-tools rfkill pkg-config libnl-route-3-dev \
+    $install rfkill pkg-config libnl-route-3-dev \
              libnl-3-dev libnl-genl-3-dev libssl-dev make libevent-dev patch \
              libdbus-1-dev ${PYPKG}-psutil ${PYPKG}-matplotlib
 
@@ -577,7 +577,7 @@ function of {
     # Resume the install:
     ./boot.sh
     ./configure
-    make
+    make CFLAGS="-g -O2 -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration"
     sudo make install
     cd $BUILD_DIR
 }

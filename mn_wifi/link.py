@@ -538,11 +538,6 @@ class IntfWireless(Intf):
             self.name, ap_intf.ssid, ap_intf.mac))
         self.setConnected(ap_intf)
 
-    def iwconfig_connect(self, ap_intf):
-        self.pexec('iwconfig {} essid {} ap {}'.format(
-            self.name, ap_intf.ssid, ap_intf.mac))
-        self.setConnected(ap_intf)
-
     def associate_infra(self, ap_intf):
         associated = 0
         if ap_intf.ieee80211r and (not self.encrypt or 'wpa' in self.encrypt):
@@ -557,7 +552,7 @@ class IntfWireless(Intf):
             associated = 1
         elif not ap_intf.encrypt:
             associated = 1
-            self.iwconfig_connect(ap_intf)
+            self.iw_connect(ap_intf)
         else:
             if not self.associatedTo:
                 if 'wpa' in ap_intf.encrypt and (not self.encrypt or 'wpa' in self.encrypt):
