@@ -304,6 +304,13 @@ class Node_wifi(Node):
         "Force association to given AP"
         intf = self.getNameToWintf(intf)
         ap_intf = ap.wintfs[0]
+        # associatedTo reflects the attempted association, not what the AP
+        # accepted (e.g. hostapd may have rejected it via MAC ACL), so check
+        # the actual link state before skipping the association
+        if intf.associatedTo == ap_intf:
+            out, _, _ = self.pexec('iw dev %s link' % intf.name)
+            if 'Connected to' not in out:
+                intf.associatedTo = None
         if hasattr(self, 'position') and hasattr(ap, 'position'):
             dist = self.get_distance_to(ap)
             if dist <= ap_intf.range:
