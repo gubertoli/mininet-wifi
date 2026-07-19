@@ -1,5 +1,5 @@
 diff --git hostapd/defconfig hostapd/defconfig
-index 550db697b..ecd69c6a8 100644
+index 550db697b..b3791bc91 100644
 --- hostapd/defconfig
 +++ hostapd/defconfig
 @@ -48,7 +48,7 @@ CONFIG_LIBNL32=y
@@ -149,8 +149,17 @@ index 550db697b..ecd69c6a8 100644
  
  # Remove all TKIP functionality
  # TKIP is an old cryptographic data confidentiality algorithm that is not
+@@ -413,7 +414,7 @@ CONFIG_IPV6=y
+ # Experimental implementation based on IEEE P802.11z/D2.6 and the protocol
+ # design is still subject to change. As such, this should not yet be enabled in
+ # production use.
+-#CONFIG_PASN=y
++CONFIG_PASN=y
+ 
+ # Device Provisioning Protocol (DPP) (also known as Wi-Fi Easy Connect)
+ CONFIG_DPP=y
 diff --git wpa_supplicant/defconfig wpa_supplicant/defconfig
-index 52befd8f1..961ebd812 100644
+index 52befd8f1..7cd7447e9 100644
 --- wpa_supplicant/defconfig
 +++ wpa_supplicant/defconfig
 @@ -172,12 +172,12 @@ CONFIG_EAP_TNC=y
@@ -237,6 +246,15 @@ index 52befd8f1..961ebd812 100644
  
  # Device Provisioning Protocol (DPP) (also known as Wi-Fi Easy Connect)
  CONFIG_DPP=y
+@@ -670,7 +670,7 @@ CONFIG_DPP2=y
+ # Experimental implementation based on IEEE P802.11z/D2.6 and the protocol
+ # design is still subject to change. As such, this should not yet be enabled in
+ # production use.
+-#CONFIG_PASN=y
++CONFIG_PASN=y
+ 
+ # Disable support for Radio Measurement (IEEE 802.11k) and supported operating
+ # class indication. Removing these is not recommended since they can help the
 diff --git wpa_supplicant/p2p_supplicant.c wpa_supplicant/p2p_supplicant.c
 index 9ee8955f2..845df97d8 100644
 --- wpa_supplicant/p2p_supplicant.c
