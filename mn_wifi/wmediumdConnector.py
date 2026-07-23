@@ -121,6 +121,12 @@ class set_interference(object):
                 posX, posY, posZ)
         configstr += '\n\t);\n\tfading_coefficient = %d;' % fading_cof
         configstr += '\n\tnoise_threshold = %d;' % noise_th
+        # PMSR/FTM two-state ranging-error model (only when enabled)
+        if kwargs.get('pmsr_sigma') or kwargs.get('pmsr_nlos_prob'):
+            configstr += '\n\tpmsr_sigma_m = %.4f;' % kwargs.get('pmsr_sigma', 0.0)
+            configstr += '\n\tpmsr_nlos_prob = %.4f;' % kwargs.get('pmsr_nlos_prob', 0.0)
+            configstr += '\n\tpmsr_nlos_bias_m = %.4f;' % kwargs.get('pmsr_nlos_bias', 0.0)
+            configstr += '\n\tpmsr_seed = %d;' % kwargs.get('pmsr_seed', 1)
         configstr += '\n\tisnodeaps = ('
         first_isnodeap = True
         for isnodeap in isnodeaps:
