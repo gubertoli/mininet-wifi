@@ -33,9 +33,11 @@ NLM_F_REQUEST = 0x01
 NLM_F_ACK = 0x04
 NLMSG_ERROR = 2
 
-# HT|VHT|HE preambles (bits 1,2,4); 20|40|80 MHz bandwidths (bits 1,2,3)
+# HT|VHT|HE preambles (NL80211_PREAMBLE_* bits 1,2,4)
 _PREAMBLES = (1 << 1) | (1 << 2) | (1 << 4)
-_BANDWIDTHS = (1 << 1) | (1 << 2) | (1 << 3)
+# bandwidths, NL80211_CHAN_WIDTH_* bits: 20=1, 40=2, 80=3, 160=5, 320=13.
+# (320 also needs an EHT/6GHz-capable radio to actually be requested.)
+_BANDWIDTHS = (1 << 1) | (1 << 2) | (1 << 3) | (1 << 5) | (1 << 13)
 
 
 def _nla(atype, payload):
