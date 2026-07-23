@@ -142,6 +142,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN, Mininet_btvirt):
         self.pmsr_nlos_prob = 0.0    # probability of an NLOS measurement
         self.pmsr_nlos_bias = 0.0    # mean of the exponential NLOS bias [m]
         self.pmsr_seed = 1
+        self.pmsr_crlb_alpha = 0.0   # >0: derive LOS sigma from ToA CRLB (bw+SNR)
         self.mob_check = False
         self.mob_model = None
         self.ac_method = ac_method
@@ -1579,7 +1580,8 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN, Mininet_btvirt):
                  aps=self.aps, cars=self.cars, aircrafts=self.aircrafts,
                  satellites=self.satellites, ppm=ppm, mediums=self.initial_mediums,
                  pmsr_sigma=self.pmsr_sigma, pmsr_nlos_prob=self.pmsr_nlos_prob,
-                 pmsr_nlos_bias=self.pmsr_nlos_bias, pmsr_seed=self.pmsr_seed)
+                 pmsr_nlos_bias=self.pmsr_nlos_bias, pmsr_seed=self.pmsr_seed,
+                 pmsr_crlb_alpha=self.pmsr_crlb_alpha)
 
     def start_wmediumd_802154(self):
         wmediumd_802154(wlinks=self.wlinks, fading_cof=self.fading_cof,
