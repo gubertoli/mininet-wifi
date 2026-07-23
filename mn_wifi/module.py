@@ -7,6 +7,7 @@ from time import sleep
 from subprocess import check_output as co, PIPE, Popen, call, CalledProcessError
 from logging import basicConfig, exception, DEBUG
 from mininet.log import debug, info, error
+from mn_wifi.hwsim_pmsr import create_ftm_radio
 
 
 class Mac80211Hwsim(object):
@@ -17,6 +18,7 @@ class Mac80211Hwsim(object):
     externally_managed = False
     devices_created_dynamically = False
     phyWlans = None
+    ftm = False   # create PMSR/FTM-capable radios (802.11az/mc ranging)
 
     def __init__(self, on_the_fly=False, **params):
         if on_the_fly:
@@ -49,6 +51,7 @@ class Mac80211Hwsim(object):
         :param alt_module: dir of a mac80211_hwsim alternative module
         :params rec_rssi: if we set rssi to hwsim
         """
+        Mac80211Hwsim.ftm = params.pop('ftm', False)
         if rec_rssi:
             self.add_phy_id(nodes)
 
@@ -115,7 +118,15 @@ class Mac80211Hwsim(object):
 
     def create_hwsim(self, n):
         self.get_phys()
-        p = Popen(["hwsim_mgmt", "-c", "-n", self.prefix + ("%02d" % n)],
+        name = self.prefix + ("%02d" % n)
+        if Mac80211Hwsim.ftm:
+            # self-contained: create a PMSR/FTM-capable radio via netlink,
+            # since hwsim_mgmt cannot request the capability. Radios are found
+            # by name afterwards; the id list only needs the right length.
+            create_ftm_radio(name)
+            Mac80211Hwsim.hwsim_ids.append(str(n))
+            return
+        p = Popen(["hwsim_mgmt", "-c", "-n", name],
                   stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1)
         output, err_out = p.communicate()
         if p.returncode == 0:
