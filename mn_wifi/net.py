@@ -135,6 +135,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN, Mininet_btvirt):
         self.isReplaying = False
         self.reverse = False
         self.alt_module = None
+        self.ftm = False   # create PMSR/FTM-capable radios (802.11az/mc ranging)
         self.mob_check = False
         self.mob_model = None
         self.ac_method = ac_method
@@ -1644,7 +1645,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN, Mininet_btvirt):
         nodes, nradios = self.count_ifaces()
         if nodes:
             Mac80211Hwsim(nodes=nodes, nradios=nradios,
-                          alt_module=self.alt_module, **params)
+                          alt_module=self.alt_module, ftm=self.ftm, **params)
 
         if self.ifb: Mac80211Hwsim.load_ifb(nradios)
 
